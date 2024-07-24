@@ -8,8 +8,27 @@
     display: grid;
     gap: 1rem;
 }
+.image_content{
+    position: relative;
+}
 .thumbnail{
     height: auto;
     max-width: 100%;
     border-radius: 0.5rem;
+}
+.hover-link{
+    font-size: 12px;
+    position: absolute;
+    bottom: 4px;
+    left: 0px;
+    right: 0px;
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.image_content:hover .hover-link{
+    opacity: 1;
 }

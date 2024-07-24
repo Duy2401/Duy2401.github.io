@@ -17,10 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newItem = document.createElement("div");
                 newItem.className = "content-inner";
                 const newItemInner = document.createElement("div");
+                newItemInner.className = "image_content";
                 const newImage = document.createElement("img");
+                const ImageLink = document.createElement("a");
+                ImageLink.className = "hover-link";
+                ImageLink.href = image.download_url;
+                ImageLink.textContent = image.download_url;
                 newImage.className = "thumbnail";
                 newImage.alt = image.url;
                 newImage.src = image.download_url;
+                newItemInner.appendChild(ImageLink);
                 newItemInner.appendChild(newImage);
                 newItem.appendChild(newItemInner);
                 content.appendChild(newItem);
