@@ -1,0 +1,15 @@
+
+#content{
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+}
+.content-inner{
+    display: grid;
+    gap: 1rem;
+}
+.thumbnail{
+    height: auto;
+    max-width: 100%;
+    border-radius: 0.5rem;
+}

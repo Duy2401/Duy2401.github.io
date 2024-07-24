@@ -3,42 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css"/>
     <title>Document</title>
-    <style>
-        .list{
-            border: 1px solid black;
-            padding: 10px 10px;
-        }
-        .list-item{
-            background-color: red;
-            width: 100px;
-            height: 100px;
-            display: inline-block;
-            padding: 10px 10px 20px 0px;
-            margin-left: 10px;
-            box-sizing: content-box;
-        }
-        div:has(+ div.active){
-            color: red;
-        }
-        
-    </style>
 </head>
 <body>
-    <div>
-        <div class="list">
-            <div class="list-item">a</div>
-            <div class="list-item">b</div>
-            <div class="list-item">c</div>
-            <div class="list-item">d</div>
-            <div class="list-item">e</div>
-        </div>
+    <div id="content">
     </div>
-    <nav>
-        <div><a href="" class="active">Home</a></div>
-        <div><a href="" class="">About</a></div>
-        <div><a href="" class="">Contact</a></div>
-
-    </nav>
+    <div id="loader">Loading more items...</div>
+    <script src="./main.js"></script>
 </body>
 </html>
