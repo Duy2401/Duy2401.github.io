@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadImages = async (page = 1) => {
     try {
       const response = await fetch(
-        `https://picsum.photos/v2/list?page=${page}&limit=2`
+        `https://picsum.photos/v2/list?page=${page}&limit=30`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);
