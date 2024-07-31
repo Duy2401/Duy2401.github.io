@@ -1,40 +1,81 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const content = document.querySelector("#content");
   const loader = document.querySelector("#loader");
-  fetch("https://picsum.photos/v2/list?page=2&limit=100")
-    .then((response) => {
+  const gallery = document.querySelector("#gallery");
+
+  loader.style.display = "block";
+
+  const loadImages = async (page = 1) => {
+    try {
+      const response = await fetch(
+        `https://picsum.photos/v2/list?page=${page}&limit=2`
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);
       }
-      return response.json(); // Chuyển đổi dữ liệu nhận được sang JSON
-    })
-    .then((data) => {
-      const observer = new IntersectionObserver((entries, observer) => {
+      const data = await response.json();
+      loader.style.display = "none";
+
+      data.forEach((image, index) => {
+        const imgWrapper = document.createElement("div");
+        imgWrapper.classList.add("image-item");
+
+        const imgElement = document.createElement("img");
+        imgElement.dataset.src = image.download_url; // Use data-src for lazy loading
+        imgElement.alt = "Image " + (index + 1);
+
+        const linkUrl = document.createElement("span");
+        linkUrl.classList.add("desc");
+        linkUrl.textContent = image.download_url;
+
+        imgWrapper.appendChild(imgElement);
+        imgWrapper.appendChild(linkUrl);
+        gallery.appendChild(imgWrapper);
+      });
+
+      // Use Intersection Observer for lazy loading
+      const lazyLoadImages = (entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setTimeout(() => {
-              data.map((image) => {
-                const newItem = document.createElement("div");
-                newItem.className = "content-inner";
-                const newItemInner = document.createElement("div");
-                newItemInner.className = "image_content";
-                const newImage = document.createElement("img");
-                const ImageLink = document.createElement("a");
-                ImageLink.className = "hover-link";
-                ImageLink.href = image.download_url;
-                ImageLink.textContent = image.download_url;
-                newImage.className = "thumbnail";
-                newImage.alt = image.url;
-                newImage.src = image.download_url;
-                newItemInner.appendChild(ImageLink);
-                newItemInner.appendChild(newImage);
-                newItem.appendChild(newItemInner);
-                content.appendChild(newItem);
-              });
-            }, 1000);
+            const img = entry.target.querySelector("img");
+            img.src = img.dataset.src;
+            observer.unobserve(entry.target);
           }
         });
+      };
+
+      const observer = new IntersectionObserver(lazyLoadImages, {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
       });
-      observer.observe(loader);
-    });
+
+      document.querySelectorAll(".image-item").forEach((item) => {
+        observer.observe(item);
+      });
+    } catch (error) {
+      loader.style.display = "none";
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+
+  let currentPage = 1;
+
+  const loadMoreImages = () => {
+    loader.style.display = "block";
+    loadImages(currentPage);
+    currentPage++;
+  };
+
+  // Load initial set of images
+  loadMoreImages();
+
+  // Add scroll event listener to load more images when reaching the bottom
+  window.addEventListener("scroll", () => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 500
+    ) {
+      loadMoreImages();
+    }
+  });
 });
